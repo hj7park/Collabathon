@@ -72,8 +72,8 @@ def post_index(request):
   return render(request, 'posts/index.html', { 'posts': posts })
 
 @login_required
-def post_detail(request, cred_id):
-  post = Post.objects.get(id=cred_id)
+def post_detail(request, post_id):
+  post = Post.objects.get(id=post_id)
   return render(request, 'posts/detail.html', { 'post': post })
 
 class postCreate(LoginRequiredMixin,CreateView):
@@ -98,16 +98,3 @@ class postDelete(LoginRequiredMixin,DeleteView):
     success_url = '/posts/'
     # This is how to create a 'user' form object
     # that includes the data from the browser
-    form = UserCreationForm(request.POST)
-    if form.is_valid():
-      # This will add the user to the database
-      user = form.save()
-      # This is how we log a user in via code
-      login(request, user)
-      return redirect('home')
-    else:
-      error_message = 'Invalid sign up - try again'
-  # A bad POST or a GET request, so render signup.html with an empty form
-  form = UserCreationForm()
-  context = {'form': form, 'error_message': error_message}
-  return render(request, 'registration/signup.html', context)

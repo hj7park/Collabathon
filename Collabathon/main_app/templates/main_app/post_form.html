@@ -2,9 +2,9 @@
 
 {% block content %}
     {% if object %}
-        <h1>Edit <span class="teal-text">{{object.account}}</span></h1>
+        <h1>Edit <span class="teal-text">{{object.title}}</span></h1>
     {% else %}
-        <h1>Add Credential</h1>
+        <h1>Add Post</h1>
     {% endif %}
     <form action="" method="post">
         <!-- Django requires the following for security purposes -->
