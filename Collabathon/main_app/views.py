@@ -1,12 +1,12 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
-from .models import Post
+from .models import Post,Comment
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
-
-from .forms import SignUpForm
+from django.urls import reverse
+from .forms import SignUpForm,CommentForm,EditForm
 from django.contrib.auth import get_user_model
 # Create your views here.
 
@@ -66,7 +66,6 @@ def signup(request):
 
 
 
-@login_required
 def post_index(request):
   posts = Post.objects.all()
   return render(request, 'posts/index.html', { 'posts': posts })
@@ -74,7 +73,8 @@ def post_index(request):
 @login_required
 def post_detail(request, post_id):
   post = Post.objects.get(id=post_id)
-  return render(request, 'posts/detail.html', { 'post': post })
+  comment_form = CommentForm()
+  return render(request, 'posts/detail.html', { 'post': post , 'comment_form': comment_form})
 
 class postCreate(LoginRequiredMixin,CreateView):
     model = Post
@@ -84,7 +84,6 @@ class postCreate(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
       # Assign the logged in user (self.request.user)
       form.instance.author = self.request.user  # form.instance is the Post
-      # Let the CreateView do its job as usual
       return super().form_valid(form)
 
 
@@ -96,5 +95,64 @@ class postUpdate(LoginRequiredMixin,UpdateView):
 class postDelete(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = '/posts/'
-    # This is how to create a 'user' form object
-    # that includes the data from the browser
+
+class commentCreate(LoginRequiredMixin,CreateView):
+    model = Comment
+    fields = ['content']
+
+    def get_success_url(self):
+      return reverse('post_detail', kwargs={'post_id': self.kwargs['pk']})
+
+    def form_valid(self, form):
+      form.instance.user =self.request.user
+      form.instance.post_id = self.kwargs['pk']
+      return super().form_valid(form)
+
+class commentUpdate(LoginRequiredMixin,UpdateView):
+    model = Comment
+    fields = ['content']
+
+    def get_success_url(self):
+      return reverse('post_detail', kwargs={'post_id': self.kwargs['pk']})
+
+    # def form_valid(self, form):
+    #   form.instance.user =self.request.user
+    #   form.instance.post_id = self.kwargs['pk']
+    #   return super().form_valid(form)
+
+class commentDelete(LoginRequiredMixin,CreateView):
+    model = Comment
+    fields = ['content']
+
+    def form_valid(self, form):
+      form.instance.user = self.request.user
+      form.instance.post = self.kwargs['pk']
+      return super().form_valid(form)
+
+# @login_required
+# def add_comment(request, post_id):
+#   form = CommentForm(request.POST)
+#   if form.is_valid():
+#     comment = form.save(commit=False)
+#     comment.post_id = post_id
+#     comment.user_id = request.user.id
+#     comment.save()
+#   return redirect('post_detail', post_id=post_id)
+
+# @login_required
+# def update_comment(request, post_id):
+#   form = CommentForm(request.POST)
+#   if form.is_valid():
+#     comment = form.save(commit=False)
+#     comment.post_id = post_id
+#     comment.save()
+#   return redirect('post_detail', post_id=post_id)
+
+# @login_required
+# def delete_comment(request, post_id):
+#   form = CommentForm(request.POST)
+#   if form.is_valid():
+#     comment = form.save(commit=False)
+#     comment.post_id = post_id
+#     comment.save()
+#   return redirect('post_detail', post_id=post_id)

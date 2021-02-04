@@ -1,6 +1,8 @@
 from django import forms 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
+from django.forms import ModelForm
+from .models import Comment
 
 User = get_user_model()
 
@@ -13,3 +15,14 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'password1', 'password2', 'newsLetter')
+
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+class EditForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']

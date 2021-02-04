@@ -1,20 +1,55 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Cred Details</h1>
+<h1>{{ post.title }}</h1>
+<div class="row">
 
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ post.title }}</span>
-    <p>Content: {{ post.content }}</p>
-    <p>Updated On: {{ post.updated_on }}</p>
-    <p>Created On : {{ post.created_on }}</p>
-    <p>Written By : {{ post.author }}</p>
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ post.title }}</span>
+        <p>Content: {{ post.content }}</p>
+        <p>Updated On: {{ post.updated_on }}</p>
+        <p>Created On : {{ post.created_on }}</p>
+        <p>Written By : {{ post.author }}</p>
+      </div>
+      <div class="card-action">
+        <a href="{% url 'post_update' post.id %}">Edit</a>
+        <a href="{% url 'post_delete' post.id %}">Delete</a>
+      </div>
+    </div>
   </div>
-  <div class="card-action">
-    <a href="{% url 'post_update' post.id %}">Edit</a>
-    <a href="{% url 'post_delete' post.id %}">Delete</a>
+
+  <div class="col s6">
+    <div class="card-content">
+      <form action="{% url 'comment_create' post.id %}" method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <input type="submit" class="btn" value="Add Comment">
+      </form>
+    </div>
+    <br>
+    <table class="striped">
+      <thead>
+        <tr><th>Comment</th><th> Written By</th><th> Written On</th><th> Edit/Delete</th></tr>
+      </thead>
+      <tbody>
+        {% for comment in post.comment_set.all %}
+          <tr>
+            <td>{{comment.content}}</td>
+            <td>{{comment.user}}</td>
+            <td>{{comment.created_on}}</td>
+            <td>
+              <div class="">
+                <!-- <a href="{% url 'update_comment' post.id comment.id %}">Edit</a> 
+                <a href="{% url 'delete_comment' post.id comment.id %}">Delete</a> !-->
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
+
 </div>
-
 {% endblock %}

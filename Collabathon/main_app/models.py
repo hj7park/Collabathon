@@ -89,9 +89,12 @@ class Post(models.Model):
 
 
 class Image(models.Model):
-    url = models.CharField(max_length=200, blank=True)
+    url = models.CharField(max_length=200)
     # Post(one) to Images(many)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"Photo for post_id: {self.post_id} @{self.url}"
 
 class Category(models.Model):
     category = ArrayField(models.CharField(max_length=200), blank=True)
@@ -105,7 +108,11 @@ class Tag(models.Model):
 
 class Comment(models.Model):
     content = models.CharField(max_length=250)
-     # Profiles(many) to Comments(many)
-    user = models.ManyToManyField(User)
+     # user(one) to Comments(many)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     updated_on = models.DateTimeField(auto_now= True)
     created_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_on']

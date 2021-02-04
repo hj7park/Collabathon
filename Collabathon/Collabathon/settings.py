@@ -125,4 +125,6 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/posts/'
 
+LOGOUT_REDIRECT_URL = '/'
+
 AUTH_USER_MODEL = 'main_app.User'
