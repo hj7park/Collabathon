@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
+from tinymce.models import HTMLField
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 
@@ -74,7 +75,7 @@ STATUS = (
 
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
-    content = models.TextField()
+    content = HTMLField()
     updated_on = models.DateTimeField(auto_now= True)
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)

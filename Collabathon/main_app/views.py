@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
-from .forms import SignUpForm,CommentForm,EditForm
+from .forms import SignUpForm,CommentForm,EditForm,PostForm
 from django.contrib.auth import get_user_model
 # Create your views here.
 
@@ -78,14 +78,13 @@ def post_detail(request, post_id):
 
 class postCreate(LoginRequiredMixin,CreateView):
     model = Post
-    fields = ['title','content']
+    form_class = PostForm
     success_url = '/posts/'
 
     def form_valid(self, form):
       # Assign the logged in user (self.request.user)
       form.instance.author = self.request.user  # form.instance is the Post
       return super().form_valid(form)
-
 
 class postUpdate(LoginRequiredMixin,UpdateView):
     model = Post
