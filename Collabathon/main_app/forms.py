@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.forms import ModelForm
-from .models import Comment
+from .models import Comment,Post
+from tinymce.widgets import TinyMCE
 
 User = get_user_model()
 
@@ -26,3 +27,18 @@ class EditForm(ModelForm):
     class Meta:
         model = Comment
         fields = ['content']
+
+class TinyMCEWidget(TinyMCE): 
+    def use_required_attribute(self, *args): 
+        return False
+  
+  
+class PostForm(forms.ModelForm): 
+    content = forms.CharField( 
+        widget=TinyMCEWidget( 
+            attrs={'required': False, 'cols': 100, 'rows': 100} 
+        ) 
+    ) 
+    class Meta: 
+        model =  Post
+        fields = ['title','content']
