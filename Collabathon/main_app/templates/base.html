@@ -9,6 +9,7 @@
     <title>Collabathon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script> !-->
 </head>
 <body>
     <header class="navbar-fixed">
@@ -18,9 +19,9 @@
                     <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Collabathon</a></li>
                 </ul>
                 <ul class="right">
-                    <li><a href="{% url 'post_create' %}" >Create a Post</a></li>
-                    <li><a href="{% url 'post_index' %}">View All My Posts</a></li>
+                    <li><a href="{% url 'post_index' %}">View All Posts</a></li>
                     {% if user.is_authenticated %}
+                        <li><a href="{% url 'post_create' %}" >Create a Post</a></li>
                         <li><a href="{% url 'about' %}">About</a></li>
                         <li><a href="{% url 'logout' %}">Log Out</a></li>
                     {% else %}
@@ -36,7 +37,7 @@
         {% endblock %}
     </main>
   	<footer class="page-footer">
-       <div class="right">All Rights Reserved, &copy; Collabathon &nbsp;</div>
+       <div class="right">All Rights Reserved, &copy; GAvengers &nbsp;</div>
     </footer>
 </body>
 </html>
