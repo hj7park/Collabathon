@@ -161,3 +161,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
 }
+
+
+import django_heroku
+django_heroku.settings(locals())
