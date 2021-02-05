@@ -52,16 +52,18 @@ def signup(request):
 
 def login(request):
   error_message = ''
-  email = request.POST['email']
-  password = request.POST['password']
-  user = authenticate(username=email,password=password)
-  if user is not None:
-      dj_login(request, user)
-      return redirect('post_index')
-  else:
-      # authenticated failed
-      error_message = 'Invalid sign up - try again'
-      return redirect('post_index')
+  if request.method == 'POST':
+    email = request.POST['email']
+    password = request.POST['password']
+    user = authenticate(username=email,password=password)
+    if user is not None:
+        dj_login(request, user)
+        return redirect('post_index')
+    else:
+        # authenticated failed
+        error_message = 'Invalid sign up - try again'
+        return redirect('post_index')
+  return redirect('post_index')
 
 # @login_required
 # def signup_info(request):
@@ -87,7 +89,6 @@ def post_index(request):
   context = {'posts': posts ,'form': form,'error_message': error_message}
   return render(request, 'posts/index.html', context)
 
-@login_required
 def post_detail(request, post_id):
   post = Post.objects.get(id=post_id)
   # tempComments = post.comment_set.all()
