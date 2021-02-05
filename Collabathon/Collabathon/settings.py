@@ -124,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/posts/'
+LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/'
 
@@ -139,6 +139,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'width': '100%',
     'height': '900px',
     'theme': 'silver',
+    'TEXT_SAVE_IMAGE_FUNCTION' : 'djangocms_text_tinymce.picture_save.create_picture_plugin',
     'plugins': '''
             textcolor save link image media preview codesample contextmenu
             table code lists fullscreen  insertdatetime  nonbreaking

@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 from .models import Post,Comment,User
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import authenticate, login as dj_login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from .forms import SignUpForm,CommentForm,EditForm,PostForm
@@ -12,11 +12,11 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-def home(request):
-    return render(request, 'home.html')
+# def home(request):
+#     return render(request, 'home.html')
 
-def about(request):
-    return render(request, 'about.html')
+# def about(request):
+#     return render(request, 'about.html')
 
 # def singup_method(request):
 #   #request.POST['name']
@@ -37,7 +37,7 @@ def signup(request):
           p = user_form.cleaned_data.get('password1')
           user = authenticate(username=u,password=p)
           if user is not None:
-            login(request, user)
+            dj_login(request, user)
             return redirect('post_index')
           else:
             # authenticated failed
@@ -48,6 +48,20 @@ def signup(request):
   form = SignUpForm()
   context = {'form': form,'error_message': error_message}
   return render(request, 'registration/signup.html', context)
+
+
+def login(request):
+  error_message = ''
+  email = request.POST['email']
+  password = request.POST['password']
+  user = authenticate(username=email,password=password)
+  if user is not None:
+      dj_login(request, user)
+      return redirect('post_index')
+  else:
+      # authenticated failed
+      error_message = 'Invalid sign up - try again'
+      return redirect('post_index')
 
 # @login_required
 # def signup_info(request):
@@ -68,20 +82,23 @@ def signup(request):
 
 def post_index(request):
   posts = Post.objects.all()
-  return render(request, 'posts/index.html', { 'posts': posts })
+  form = SignUpForm()
+  error_message = 'Invalid sign up - try again'
+  context = {'posts': posts ,'form': form,'error_message': error_message}
+  return render(request, 'posts/index.html', context)
 
 @login_required
 def post_detail(request, post_id):
   post = Post.objects.get(id=post_id)
-  tempComments = post.comment_set.all()
+  # tempComments = post.comment_set.all()
 
-  comments ={}
+  # comments ={}
 
 
-  for comment in tempComments:
-      print(type(User.objects.get(id=comment.user_id)))
-      print(User.objects.get(id=comment.user_id))
-      print(comment.user_id)
+  # for comment in tempComments:
+  #     print(type(User.objects.get(id=comment.user_id)))
+  #     print(User.objects.get(id=comment.user_id))
+  #     print(comment.user_id)
       
 
   comment_form = CommentForm()
@@ -90,7 +107,7 @@ def post_detail(request, post_id):
 class postCreate(LoginRequiredMixin,CreateView):
     model = Post
     form_class = PostForm
-    success_url = '/posts/'
+    success_url = '/'
 
     def form_valid(self, form):
       # Assign the logged in user (self.request.user)
@@ -104,7 +121,7 @@ class postUpdate(LoginRequiredMixin,UpdateView):
 
 class postDelete(LoginRequiredMixin,DeleteView):
     model = Post
-    success_url = '/posts/'
+    success_url = '/'
 
 class commentCreate(LoginRequiredMixin,CreateView):
     model = Comment

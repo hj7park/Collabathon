@@ -3,13 +3,17 @@
 
 <h1>Sign Up</h1>
 
-{% if error_message %}<p class="red-text">{{ error_message }}</p>{% endif %}
+<div id="overlay">
+  <div>
+    <form method="post" action="{% url 'signup' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn" value="next">
+    </form>
+  </div>
+  Click here to [<a href='#' onclick='overlay()'>close</a>]
+</div>
 
-<form method="post" action="{% url 'signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {{ profile_form.as_p }}
-  <input type="submit" class="btn" value="next">
-</form>
+
 
 {% endblock %}

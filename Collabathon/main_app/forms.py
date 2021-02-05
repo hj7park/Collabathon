@@ -17,7 +17,6 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('first_name', 'last_name', 'email', 'password1', 'password2', 'newsLetter')
 
-
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
