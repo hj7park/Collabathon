@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Collabathon</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href='{% static 'css/style.css' %}?{% now "U" %}'>
+    <script defer src="https://cloud.tinymce.com/dev/tinymce.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+    <header class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <ul>
+                    <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Collabathon</a></li>
+                </ul>
+                <ul class="right">
+                    <li><a href="">Work</a></li>
+                    <li><a href="">Approach</a></li>
+                    <li><a href="">Career</a></li>
+                    <li><a href="">Culture</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'post_create' %}" >Create a Post</a></li>
+                        <li><a href="{% url 'logout' %}">Log Out</a></li>
+                    {% else %}
+                        <!-- <li><a href="{% url 'signup' %}" >Sign Up</a></li> -->
+                        <!-- <li><a href="{% url 'login' %}">Log In</a></li> -->
+                        <li><a href="#" onclick='overlay2()'>Log In</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+  	<footer class="page-footer">
+       <div class="right">All Rights Reserved, &copy; GAvengers &nbsp;</div>
+    </footer>
+    <script defer src="{% static '/js/script.js' %}"></script>
+</body>
+
+</html>
