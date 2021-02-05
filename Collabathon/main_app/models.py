@@ -46,14 +46,15 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     newsLetter = models.BooleanField(default=False)
-
+    first_name = models.CharField(max_length=200)
+    last_name = models.CharField(max_length=200)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email
+        return self.first_name
 # class Profile(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE) #user_id
 #     name = models.CharField(max_length=100)

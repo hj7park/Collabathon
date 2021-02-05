@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse
 from django.shortcuts import render,redirect
-from .models import Post,Comment
+from .models import Post,Comment,User
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate
@@ -73,6 +73,17 @@ def post_index(request):
 @login_required
 def post_detail(request, post_id):
   post = Post.objects.get(id=post_id)
+  tempComments = post.comment_set.all()
+
+  comments ={}
+
+
+  for comment in tempComments:
+      print(type(User.objects.get(id=comment.user_id)))
+      print(User.objects.get(id=comment.user_id))
+      print(comment.user_id)
+      
+
   comment_form = CommentForm()
   return render(request, 'posts/detail.html', { 'post': post , 'comment_form': comment_form})
 

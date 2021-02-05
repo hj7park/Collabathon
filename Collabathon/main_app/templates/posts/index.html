@@ -12,7 +12,7 @@
         <div class="card">
             <div class="card-content">
               <span class="card-title">{{ post.title }}</span>
-              <p>Content: {{ post.content }}</p>
+              <p>Content: {{ post.content|safe }}</p>
               <p>Updated On: {{ post.updated_on }}</p>
               <p>Created On : {{ post.created_on }}</p>
               <p>Written By : {{ post.author }}</p>
