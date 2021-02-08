@@ -16,4 +16,6 @@ To add and commit changes
 
 pip3 install django-environ
 Environment files
+
+To actually run the (python3 manage.py runserver) .env file need to be made in the Collabathon folder.
 ``` 
