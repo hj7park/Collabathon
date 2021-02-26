@@ -1,6 +1,6 @@
 # Project-3-Django-App
 Project-3-Django-App
-
+https://ga-blogs.herokuapp.com/
 
 #### Instructions on how to use git ####
 ```
